@@ -188,7 +188,7 @@ Your final, cleaned dataset is stored in:
 
 
 
-###### **layoffs\_staging**
+**layoffs\_staging**
 
 
 
