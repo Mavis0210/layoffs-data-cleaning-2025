@@ -2,7 +2,7 @@
 
 
 
-This project documents the full data-cleaning pipeline I built to transform a messy layoffs dataset into a clean, analysis-ready table using MySQL. The goal was to take a raw CSV export and systematically clean, validate, and standardize the data—while keeping the process repeatable.
+This project documents the full data-cleaning pipeline I built to transform a messy layoffs dataset into a clean, analysis-ready table using MySQL. The goal was to take a raw CSV export and systematically clean, validate, and standardize the data while keeping the process repeatable.
 
 
 
@@ -16,7 +16,7 @@ Everything here reflects the actual steps I took while working through the datas
 
 **main.sql**
 
-Full SQL workflow: schema creation **→** raw import → cleaning → type conversions → duplicate removal.
+Full SQL workflow: schema creation → raw import → cleaning → type conversions → duplicate removal.
 
 
 
