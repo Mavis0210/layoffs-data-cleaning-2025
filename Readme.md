@@ -54,7 +54,7 @@ This preserves the original dataset unchanged.
 This table is created using:
 
 ```sql
-CREATE TABLE layoffs_staging LIKE layoffs_raw;
+CREATE TABLE layoffs_staging LIKE layoffs_raw; ```sql
 
 
 All cleaning occurs here, including:
