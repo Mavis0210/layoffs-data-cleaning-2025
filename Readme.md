@@ -79,7 +79,7 @@ All cleaning occurs here, including:
 
 This table becomes the final cleaned dataset.
 
- How to Use the Script
+## How to Use the Script
 
 ### 1. Create database & tables
 
