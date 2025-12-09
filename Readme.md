@@ -4,15 +4,15 @@
 
 This project contains a complete SQL workflow for transforming a messy layoffs dataset into a clean, analysis-ready dataset using MySQL.  
 
-The cleaning pipeline is fully scripted in \*\*main.sql\*\*, making it easy to re-run and fully transparent.
+The cleaning pipeline is fully scripted in **main.sql**, making it easy to re-run and fully transparent.
 
 
 
 The project follows a structured approach:
 
-1\. Import raw CSV → `layoffs\_raw`
+1\. Import raw CSV - `layoffs\_raw`
 
-2\. Copy to staging → `layoffs\_staging`
+2\. Copy to staging - `layoffs\_staging`
 
 3\. Perform all cleaning, conversions, and validation
 
@@ -24,7 +24,7 @@ The project follows a structured approach:
 
 
 
-\### \*\*main.sql\*\*
+\### main.sql
 
 The full SQL workflow, including:
 
@@ -52,13 +52,13 @@ The full SQL workflow, including:
 
 
 
-\### \*\*layoffs\_raw.csv\*\*
+\### layoffs\_raw.csv
 
 The raw dataset exported from Excel, loaded exactly as-is.
 
 
 
-\### \*\*layoffs\_cleaned.csv\*\* 
+\### layoffs\_cleaned.csv
 
 The cleaned dataset exported from MySQL workbench.
 
@@ -74,7 +74,7 @@ The project uses a two-table approach for clarity and safety:
 
 
 
-\### \*\*1. layoffs\_raw — Raw Import Table\*\*
+\### 1. layoffs\_raw — Raw Import Table
 
 
 
@@ -86,7 +86,7 @@ This preserves the original dataset unchanged.
 
 
 
-\### \*\*2. layoffs\_staging — Cleaning \& Transformation Table\*\*
+\### 2. layoffs\_staging — Cleaning \& Transformation Table
 
 
 
@@ -94,7 +94,7 @@ This table is created using:
 
 
 
-```sql
+-- sql
 
 CREATE TABLE layoffs\_staging LIKE layoffs\_raw;
 
@@ -212,7 +212,7 @@ Below is an overview aligned exactly with the SQL.
 
 
 
-\# \*\*Detailed Cleaning Steps (Aligned with main.sql)\*\*
+\## Detailed Cleaning Steps (Aligned with main.sql)
 
 
 
@@ -432,7 +432,7 @@ This is the dataset you should use for:
 
 
 
-\##Notes \& Tips
+\## Notes \& Tips
 
 
 
@@ -444,7 +444,7 @@ This is the dataset you should use for:
 
 
 
-\##Future Enhancements
+\## Future Enhancements
 
 
 
