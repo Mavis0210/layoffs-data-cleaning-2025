@@ -9,7 +9,7 @@ The project follows a structured approach:
 3. Perform all cleaning, conversions, and validation
 4. Output a high-quality cleaned dataset for analysis
 
----
+
 
 ## Project Files
 
@@ -33,13 +33,13 @@ The raw dataset exported from Excel, loaded exactly as-is.
 ### layoffs_cleaned.csv 
 The cleaned dataset exported from MySQL workbench.
 
----
+
 
 ## Data Cleaning Strategy
 
 The project uses a two-table approach for clarity and safety:
 
----
+
 
 ### 1. layoffs_raw — Raw Import Table
 
@@ -47,14 +47,14 @@ A flexible table where all columns are VARCHAR, allowing the CSV to load without
 
 This preserves the original dataset unchanged.
 
----
+
 
 ### 2. layoffs_staging — Cleaning & Transformation Table**
 
 This table is created using:
 
 
-CREATE TABLE layoffs_staging LIKE layoffs_raw;
+### CREATE TABLE layoffs_staging LIKE layoffs_raw;
 
 
 All cleaning occurs here, including:
@@ -79,9 +79,9 @@ All cleaning occurs here, including:
 
 This table becomes the final cleaned dataset.
 
-## How to Use the Script
+ How to Use the Script
 
-1. Create database & tables
+### 1. Create database & tables
 
 Run the first section of main.sql to create:
 
@@ -91,7 +91,7 @@ Run the first section of main.sql to create:
 
 - layoffs_staging
 
-2. Import your CSV
+### 2. Import your CSV
 
 LOAD DATA INFILE '/path/to/layoffs.csv'
 INTO TABLE layoffs_raw
@@ -106,7 +106,7 @@ You may need to:
 
 - move the file into MySQL’s secure_file_priv folder
 
-3. Run the cleaning steps
+### 3. Run the cleaning steps
 
 The script executes a full, structured cleaning pipeline.
 Below is an overview aligned exactly with the SQL.
@@ -123,7 +123,7 @@ Ensures matching accuracy for continent mapping.
 
 - Normalize country names
 
-Example:
+### Example:
 
 "united arab emirates" → "uae"
 
@@ -133,7 +133,7 @@ Remove suffixes like:
 
 , Non-U.S.
 
-- Convert date strings to actual MySQL DATE type
+- Convert date strings to the actual MySQL DATE type
 
 Both date and date_added are cleaned and converted using STR_TO_DATE().
 
@@ -141,9 +141,9 @@ Both date and date_added are cleaned and converted using STR_TO_DATE().
 
 Rows with BOTH:
 
-total_laid_off = empty
+### total_laid_off = empty
 
-percentage_laid_off = empty
+### percentage_laid_off = empty
 
 are removed.
 
@@ -186,39 +186,39 @@ month (full month name)
 
 Countries are mapped into:
 
-North America
+- North America
 
-Europe
+- Europe
 
-Asia
+- Asia
 
-South America
+- South America
 
-Australia
+- Australia
 
-Africa
+- Africa
 
-Middle East
+- Middle East
 
-Other
+- Other
 
-- Summary of data completeness
+###  Summary of data completeness
 
 The script ends with a SELECT that reports:
 
-rows with both numeric fields
+- rows with both numeric fields
 
-rows missing percentage
+- rows missing percentage
 
-rows missing totals
+- rows missing totals
 
-rows missing both
+- rows missing both
 
 ## Final Output
 
 The final cleaned dataset lives in:
 
- layoffs_staging
+ ### layoffs_staging
 
 It includes:
 
