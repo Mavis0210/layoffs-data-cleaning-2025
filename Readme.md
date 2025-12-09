@@ -20,11 +20,11 @@ The project follows a structured approach:
 
 
 
-### \##Project Files
+##Project Files
 
 
 
-\### \*\*main.sql\*\*
+### main.sql
 
 The full SQL workflow, including:
 
@@ -52,13 +52,13 @@ The full SQL workflow, including:
 
 
 
-\### \*\*layoffs\_raw.csv\*\*
+### layoffs\_raw.csv
 
 The raw dataset exported from Excel, loaded exactly as-is.
 
 
 
-\### \*\*layoffs\_cleaned.csv\*\* 
+### layoffs\_cleaned.csv
 
 The cleaned dataset exported from MySQL workbench.
 
@@ -66,7 +66,7 @@ The cleaned dataset exported from MySQL workbench.
 
 
 
-### \##Data Cleaning Strategy
+### Data Cleaning Strategy
 
 
 
@@ -74,7 +74,7 @@ The project uses a two-table approach for clarity and safety:
 
 
 
-\### \*\*1. layoffs\_raw — Raw Import Table\*\*
+### 1. layoffs\_raw — Raw Import Table
 
 
 
@@ -86,7 +86,7 @@ This preserves the original dataset unchanged.
 
 
 
-\### \*\*2. layoffs\_staging — Cleaning \& Transformation Table\*\*
+### 2. layoffs\_staging — Cleaning \& Transformation Table
 
 
 
@@ -103,48 +103,29 @@ CREATE TABLE layoffs\_staging LIKE layoffs\_raw;
 All cleaning occurs here, including:
 
 
+\- trimming whitespace
 
-* trimming whitespace
+\- converting dates
 
+\- validating and converting numbers
 
+\- handling missing values
 
-* converting dates
+\- removing duplicates
 
+\- standardizing country names
 
+\- extracting month/year
 
-* validating and converting numbers
+\- mapping countries → continents
 
-
-
-* handling missing values
-
-
-
-* removing duplicates
-
-
-
-* standardizing country names
-
-
-
-* extracting month/year
-
-
-
-* mapping countries → continents
-
-
-
-* cleaning location text
+\- cleaning location text
 
 
 
 This table becomes the final cleaned dataset.
 
-
-
-### \##How to Use the Script
+### How to Use the Script
 
 
 
