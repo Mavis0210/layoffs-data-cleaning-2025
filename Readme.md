@@ -117,27 +117,27 @@ Trim whitespace from all text fields
 
 Ensures consistency before conversions.
 
-- Convert country names to lowercase
+### - Convert country names to lowercase
 
 Ensures matching accuracy for continent mapping.
 
-- Normalize country names
+### - Normalize country names
 
 ### Example:
 
 "united arab emirates" → "uae"
 
-- Clean location values
+### - Clean location values
 
 Remove suffixes like:
 
 , Non-U.S.
 
-- Convert date strings to the actual MySQL DATE type
+### - Convert date strings to the actual MySQL DATE type
 
 Both date and date_added are cleaned and converted using STR_TO_DATE().
 
-- Remove meaningless rows
+### - Remove meaningless rows
 
 Rows with BOTH:
 
@@ -147,7 +147,7 @@ Rows with BOTH:
 
 are removed.
 
-- Convert numeric text → typed numeric columns
+### - Convert numeric text → typed numeric columns
 
 Two new validated columns are created:
 
@@ -161,9 +161,9 @@ Converted only if a valid number.
 
 Invalid values become NULL instead of breaking the dataset.
 
-- Remove duplicates
+### - Remove duplicates
 
-Using a temporary auto-increment column + ROW_NUMBER:
+Using a temporary auto-increment column called ROW_NUMBER:
 
 Duplicates are removed based on:
 
@@ -172,17 +172,17 @@ Duplicates are removed based on:
 - date
 - country
 
-- Drop the original messy numeric columns
+### - Drop the original messy numeric columns
 
 After validated columns are created, the VARCHAR versions are removed.
 
-- Extract month & year
+### - Extract month & year
 
 year (INT)
 
 month (full month name)
 
-- Add continent column
+### - Add continent column
 
 Countries are mapped into:
 
