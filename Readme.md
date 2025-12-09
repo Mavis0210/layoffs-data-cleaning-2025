@@ -2,73 +2,153 @@
 
 
 
-This project documents the full data-cleaning pipeline I built to transform a messy layoffs dataset into a clean, analysis-ready table using MySQL. The goal was to take a raw CSV export and systematically clean, validate, and standardize the data while keeping the process repeatable.
+This project contains a complete SQL workflow for transforming a messy layoffs dataset into a clean, analysis-ready dataset using MySQL.  
+
+The cleaning pipeline is fully scripted in \*\*main.sql\*\*, making it easy to re-run and fully transparent.
 
 
 
-Everything here reflects the actual steps I took while working through the dataset.
+The project follows a structured approach:
+
+1\. Import raw CSV → `layoffs\_raw`
+
+2\. Copy to staging → `layoffs\_staging`
+
+3\. Perform all cleaning, conversions, and validation
+
+4\. Output a high-quality cleaned dataset for analysis
 
 
 
-### Project Files
+### \##Project Files
 
 
 
-**main.sql**
+\### \*\*main.sql\*\*
 
-Full SQL workflow: schema creation → raw import → cleaning → type conversions → duplicate removal.
+The full SQL workflow, including:
 
+\- Database \& table creation  
 
+\- Raw → staging pipeline  
 
-**layoffs.csv**
+\- Whitespace trimming  
 
-The unmodified dataset I started with (exported from Excel).
+\- Date conversion  
 
+\- Numeric cleaning  
 
+\- Country standardization  
 
-### Project Approach
+\- Location cleaning  
 
+\- Duplicate removal  
 
+\- Month \& year extraction  
 
-I split the workflow into two main tables:
+\- Continent assignment  
 
-
-
-1. **layoffs\_raw**
-
-
-
-A flexible, all-VARCHAR landing table meant to take the CSV exactly as it comes.
-
-No assumptions. No type errors. Just the raw data.
+\- Final data completeness summary  
 
 
 
-2\. **layoffs\_staging**
+\### \*\*layoffs\_raw.csv\*\*
+
+The raw dataset exported from Excel, loaded exactly as-is.
 
 
 
-A second table used for all cleaning work:
+\### \*\*layoffs\_cleaned.csv\*\* 
+
+The cleaned dataset exported from MySQL workbench.
+
+
+
+
+
+### \##Data Cleaning Strategy
+
+
+
+The project uses a two-table approach for clarity and safety:
+
+
+
+\### \*\*1. layoffs\_raw — Raw Import Table\*\*
+
+
+
+A flexible table where \*\*all columns are VARCHAR\*\*, allowing the CSV to load without errors or assumptions.
+
+
+
+This preserves the original dataset unchanged.
+
+
+
+\### \*\*2. layoffs\_staging — Cleaning \& Transformation Table\*\*
+
+
+
+This table is created using:
+
+
+
+```sql
+
+CREATE TABLE layoffs\_staging LIKE layoffs\_raw;
+
+
+
+All cleaning occurs here, including:
+
+
 
 * trimming whitespace
-* converting date strings
+
+
+
+* converting dates
+
+
+
 * validating and converting numbers
-* handling missing fields
+
+
+
+* handling missing values
+
+
+
 * removing duplicates
-* creating cleaned numeric/date columns
-* dropping the original messy ones
 
 
 
-Separating raw vs. cleaned data made the cleanup process easier to test and re-run at any time.
+* standardizing country names
 
 
 
-### How to Run the Script
+* extracting month/year
 
 
 
-**1. Create the Database + Tables**
+* mapping countries → continents
+
+
+
+* cleaning location text
+
+
+
+This table becomes the final cleaned dataset.
+
+
+
+### \##How to Use the Script
+
+
+
+**1. Create database \& tables**
 
 
 
@@ -76,17 +156,21 @@ Run the first section of main.sql to create:
 
 
 
-* the layoffs\_db database
-* layoffs\_raw (raw import table)
-* layoffs\_staging (cleaned table)
+* layoffs\_db
 
 
 
-**2. Import the CSV**
+* layoffs\_raw
 
 
 
-Once layoffs\_raw exists, import your CSV file.
+* layoffs\_staging
+
+
+
+
+
+**2. Import your CSV**
 
 
 
@@ -104,114 +188,275 @@ IGNORE 1 ROWS;
 
 
 
-**Notes**
+You may need to:
 
 
 
-* You may need to adjust the path depending on your OS.
-* MySQL might require placing the CSV inside the directory allowed by secure\_file\_priv.
+* adjust line endings on Windows
 
 
 
+* move the file into MySQL’s secure\_file\_priv folder
 
 
-**3. Run the Data Cleaning Sectio**n
 
 
 
-The rest of main.sql performs the actual transformations.
+**3. Run the cleaning steps**
 
-Here are the major steps I implemented:
 
 
+The script executes a full, structured cleaning pipeline.
 
-* &nbsp;Trim all strings
+Below is an overview aligned exactly with the SQL.
 
 
 
-Removes leading/trailing whitespace from every column.
+\# \*\*Detailed Cleaning Steps (Aligned with main.sql)\*\*
 
 
 
-* &nbsp;Convert date fields to proper DATE type
+* Trim whitespace from all text fields
 
 
 
-Used STR\_TO\_DATE() assuming MM/DD/YYYY format.
+Ensures consistency before conversions.
 
 
 
-* &nbsp;Remove fully empty entries
+* Normalize country names
 
 
 
-If both total layoffs + percentage layoffs were blank, the row is removed.
+**Example:**
 
 
 
-* &nbsp;Safely convert numeric fields
+"united arab emirates" → "uae"
 
 
 
-1. total\_laid\_off → INT
-2. percentage\_laid\_off → DECIMAL(5,2)
+* Clean location values
 
-Values are converted only when valid.
 
 
+Remove suffixes like:
 
-* &nbsp;Identify and remove duplicate rows
+**, Non-U.S.**
 
 
 
-Used ROW\_NUMBER() in a CTE, based on:
+* Convert date strings to actual MySQL DATE type
 
-company, location, date, country
 
 
+Both date and date\_added are cleaned and converted using STR\_TO\_DATE().
 
-* &nbsp;Drop old raw text columns
 
 
+* Remove meaningless rows
 
-Once the cleaned columns were created and validated, the original VARCHAR versions were removed.
 
 
+Rows with BOTH:
 
 
 
-### Final Output
+1. total\_laid\_off = empty
+2. percentage\_laid\_off = empty
 
 
 
-Your final, cleaned dataset is stored in:
+are removed.
 
 
 
-**layoffs\_staging**
+* Convert numeric text → typed numeric columns
 
 
 
-This table contains:
+Two new validated columns are created:
 
 
 
-* real date types
-* validated numeric columns
-* standardized text
-* no duplicate rows
-* no empty placeholder entries
+**total\_laid\_off\_int**
 
 
 
-This is the table to use for any analysis, dashboards, or visualizations.
+Converted only if numeric.
 
 
 
-### Notes \& Tips
+**percentage\_laid\_off\_decimal**
 
 
 
-* If your dates use a different format, update the STR\_TO\_DATE() format string.
-* Windows users may need to use LINES TERMINATED BY '\\r\\n'.
-* Because the workflow is fully scripted, you can clear the tables and re-run the whole process anytime.
+Converted only if a valid number.
+
+
+
+Invalid values become NULL instead of breaking the dataset.
+
+
+
+* Remove duplicates
+
+
+
+Using a temporary auto-increment column + ROW\_NUMBER:
+
+
+
+Duplicates are removed based on:
+
+
+
+1. company
+2. location
+3. date
+4. country
+
+
+
+* Drop the original messy numeric columns
+
+
+
+After validated columns are created, the VARCHAR versions are removed.
+
+
+
+* Add continent column
+
+
+
+Countries are mapped into:
+
+
+
+1. North America
+2. Europe
+3. Asia
+4. South America
+5. Ocenia
+6. Africa
+7. Middle East
+8. Other
+
+
+
+* Summary of data completeness
+
+
+
+The script ends with a SELECT that reports:
+
+
+
+1. rows with both numeric fields
+2. rows missing percentage
+3. rows missing totals
+4. rows missing both
+
+
+
+
+
+\##Final Output
+
+
+
+The final cleaned dataset lives in:
+
+
+
+\*\*layoffs\_staging\*\*
+
+
+
+It includes:
+
+
+
+* clean dates
+
+
+
+* validated integers and decimals
+
+
+
+* continent
+
+
+
+* month \& year
+
+
+
+* cleaned location names
+
+
+
+* standardized country names
+
+
+
+* no duplicates
+
+
+
+* no empty rows
+
+
+
+This is the dataset you should use for:
+
+
+
+* dashboards
+
+
+
+* analysis
+
+
+
+* Power BI
+
+
+
+* visualizations
+
+
+
+
+
+\##Notes \& Tips
+
+
+
+* If the CSV date format changes, update the STR\_TO\_DATE() format string.
+
+
+
+* Keeping layoffs\_raw untouched allows easy rollback
+
+
+
+\##Future Enhancements
+
+
+
+* Add automated validation rules
+
+
+
+* Add a country lookup reference table
+
+
+
+* Export cleaned data directly via SQL
+
+
+
